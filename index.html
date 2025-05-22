@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <title>1404-3-3 to 30 yo</title>
+</head>
+
+<body>
+    <div style="position: sticky;top: 0;background-color: #29292e;width: 100%;z-index: 1;border-radius: 8px 8px 0 0;">
+        <div style="padding: 22px 20px;">
+            <h1 style="direction: ltr;margin-bottom: 15px;margin-top: 3px;">1404-3-3 to 30 yo</h1>
+            <h5 style="color: #fff;text-align: center;margin-bottom: 6px;" class="font-family-medium">
+                و خداوند همراه و یاری دهنده‌ی من خواهد بود.
+            </h5>
+        </div>
+    </div>
+    <div class="container">
+        <div id="checkboxes" class="font-family-medium"></div>
+    </div>
+
+    <script>
+        const TOTAL_BOXES = 343;
+        const startDate = new Date(2025, 4, 24);
+        const storageKey = 'dailyCheckboxes';
+        let checkboxStates = JSON.parse(localStorage.getItem(storageKey)) || Array(TOTAL_BOXES).fill(false);
+        const container = document.getElementById('checkboxes');
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        let todayCheckbox = null;
+        for (let i = 0; i < TOTAL_BOXES; i++) {
+            const currentDay = new Date(startDate.getTime());
+            currentDay.setDate(startDate.getDate() + i);
+            const wrapperDiv = document.createElement('div');
+            wrapperDiv.className = 'checkbox-wrapper';
+            const itemLabel = document.createElement('label');
+            itemLabel.className = 'item';
+            itemLabel.htmlFor = `todo-${i}`;
+            const input = document.createElement('input');
+            input.type = 'checkbox';
+            input.className = 'hidden';
+            input.id = `todo-${i}`;
+            input.checked = checkboxStates[i];
+            input.addEventListener('change', () => {
+                checkboxStates[i] = input.checked;
+                localStorage.setItem(storageKey, JSON.stringify(checkboxStates));
+            });
+            const cbxLabel = document.createElement('label');
+            cbxLabel.className = 'cbx';
+            cbxLabel.htmlFor = `todo-${i}`;
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', '14px');
+            svg.setAttribute('height', '12px');
+            svg.setAttribute('viewBox', '0 0 14 12');
+            const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+            polyline.setAttribute('points', '1 7.6 5 11 13 1');
+            svg.appendChild(polyline);
+            cbxLabel.appendChild(svg);
+            const cbxLbl = document.createElement('label');
+            cbxLbl.className = 'cbx-lbl';
+            cbxLbl.htmlFor = `todo-${i}`;
+            cbxLbl.textContent = `روز ${i + 1} - تاریخ : ${currentDay.toLocaleDateString('fa-IR')}`;
+            itemLabel.appendChild(input);
+            itemLabel.appendChild(cbxLabel);
+            itemLabel.appendChild(cbxLbl);
+            wrapperDiv.appendChild(itemLabel);
+            container.appendChild(wrapperDiv);
+            if (currentDay.getTime() === today.getTime()) {
+                todayCheckbox = wrapperDiv;
+            }
+        }
+        if (todayCheckbox) {
+            todayCheckbox.style.border = '2px solid rgb(90 115 155)';
+            todayCheckbox.style.borderRadius = '8px';
+            setTimeout(() => {
+                todayCheckbox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 500);
+        }
+    </script>
+</body>
+
+</html>
